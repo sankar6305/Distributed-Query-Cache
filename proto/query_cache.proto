@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+package query_cache;
+
+service QueryCache {
+  // Executes a SQL query, transparently serving from cache on a hit.
+  rpc RunQuery(QueryRequest) returns (QueryResponse);
+
+  // Pre-populates the cache for a batch of queries.
+  rpc WarmUp(WarmUpRequest) returns (WarmUpResponse);
+
+  // Reports service + dependency (Redis, DuckDB) health.
+  rpc Health(HealthRequest) returns (HealthResponse);
+}
+
+message QueryRequest {
+  string sql = 1;
+}
+
+message QueryResponse {
+  bool cache_hit = 1;
+  double latency_ms = 2;
+  uint64 row_count = 3;
+  // FlatBuffers-encoded result set (see service/src/schema/result.fbs).
+  bytes result = 4;
+}
+
+message WarmUpRequest {
+  repeated string sql = 1;
+}
+
+message WarmUpResponse {
+  uint32 queries_warmed = 1;
+  uint32 queries_failed = 2;
+}
+
+message HealthRequest {}
+
+enum ServingStatus {
+  UNKNOWN = 0;
+  SERVING = 1;
+  NOT_SERVING = 2;
+}
+
+message HealthResponse {
+  ServingStatus status = 1;
+  bool redis_ok = 2;
+  bool duckdb_ok = 3;
+}
