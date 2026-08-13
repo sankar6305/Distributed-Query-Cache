@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+duckdb = { version = "1.10505.0", features = ["bundled"] }
+flatbuffers = "25.12.19"
 prost = "0.14.4"
+redis = { version = "1.5.0", features = ["tokio-comp", "connection-manager"] }
 tokio = { version = "1.53.1", features = ["full"] }
 tonic = "0.14.6"
 tonic-prost = "0.14.6"

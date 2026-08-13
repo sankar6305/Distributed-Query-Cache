@@ -9,6 +9,7 @@ service QueryCache {
   // Pre-populates the cache for a batch of queries.
   rpc WarmUp(WarmUpRequest) returns (WarmUpResponse);
 
+
   // Reports service + dependency (Redis, DuckDB) health.
   rpc Health(HealthRequest) returns (HealthResponse);
 }

@@ -1,0 +1,12 @@
+namespace query_cache.fb;
+
+table ResultRow {
+  values: [string];
+}
+
+table ResultSet {
+  columns: [string];
+  rows: [ResultRow];
+}
+
+root_type ResultSet;
